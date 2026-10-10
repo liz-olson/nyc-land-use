@@ -1,0 +1,28 @@
+# dbt project config. dbt turns SQL SELECT statements ("models") into tables/views,
+# runs tests on them, and generates documentation with a lineage graph.
+name: nyc_land_use
+version: "0.1.0"
+config-version: 2
+
+# Which profile (connection settings) to use. Defined in transform/profiles.yml.
+profile: nyc_land_use
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# How each layer is stored. Silver models are cheap views; gold marts are real tables
+# because the website export and analysis queries read them repeatedly.
+models:
+  nyc_land_use:
+    staging:          # silver: one cleaned model per source table
+      +materialized: view
+      +schema: silver
+    intermediate:     # silver: joins, crosswalks, geography
+      +materialized: view
+      +schema: silver
+    marts:            # gold: analysis- and site-ready tables
+      +materialized: table
+      +schema: gold

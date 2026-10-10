@@ -1,0 +1,17 @@
+# Connection settings for dbt. Kept in the repo (not ~/.dbt/) so CI and your laptop
+# use the same config. It contains no secrets: values come from environment variables.
+nyc_land_use:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      # Path is relative to where dbt is run from: always run from the repo root
+      # (the Makefile does this for you).
+      path: "{{ env_var('DUCKDB_PATH', 'data/warehouse.duckdb') }}"
+      threads: 4
+      # DuckDB extensions get added here in the phases that need them:
+      # extensions:
+      #   - spatial   # Phase 3: point-in-polygon joins to council/community districts
+      #   - httpfs    # Phase 5: reading Parquet from cloud storage like R2
+    # Phase 5 adds a `prod` target pointing at MotherDuck, e.g.
+    # path: "md:nyc_land_use?motherduck_token={{ env_var('MOTHERDUCK_TOKEN') }}"

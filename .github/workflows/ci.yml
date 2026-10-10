@@ -1,0 +1,33 @@
+# Continuous integration: runs on every push and pull request.
+# If any step fails, GitHub marks the commit with a red X and emails you.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Install uv (Python package manager)
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true   # reuse downloaded packages between runs: faster, kinder to PyPI
+
+      - name: Install Python and dependencies
+        run: uv sync --locked   # --locked fails if uv.lock is out of date, so CI matches your laptop exactly
+
+      - name: Lint
+        run: make lint
+
+      - name: Unit tests
+        run: make test
+
+      - name: dbt can connect and the project compiles
+        run: |
+          make dbt-debug
+          make dbt-parse

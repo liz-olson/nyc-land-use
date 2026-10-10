@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Local data: never commit raw or derived data files
+data/*
+!data/.gitkeep
+*.duckdb
+*.duckdb.wal
+
+# dbt build outputs
+transform/target/
+transform/dbt_packages/
+transform/logs/
+logs/
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Site build output
+site/dist/
+site/.observablehq/cache/
+node_modules/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# dbt anonymous user id (per machine)
+transform/.user.yml

@@ -1,0 +1,28 @@
+[project]
+name = "nyc-land-use"
+version = "0.1.0"
+description = "Tracking NYC land use applications from filing through City Council review to construction."
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "requests>=2.32",   # HTTP calls to NYC Open Data (Socrata) and other APIs
+    "duckdb>=1.2",      # local analytical database; same engine MotherDuck runs
+    "pyarrow>=18",      # reading and writing Parquet files
+    "dbt-duckdb>=1.9",  # dbt (SQL transformations + tests + docs) with the DuckDB adapter
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",        # unit tests for ingestion code
+    "ruff>=0.8",        # linter + formatter: catches bugs and keeps style consistent
+]
+
+[tool.pytest.ini_options]
+testpaths = ["ingest/tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]  # errors, pyflakes, import sorting, bugbear, pyupgrade
