@@ -34,3 +34,7 @@ node_modules/
 
 # dbt anonymous user id (per machine)
 transform/.user.yml
+
+# Editor files
+.Rhistory
+.ipynb_checkpoints/

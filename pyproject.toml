@@ -13,6 +13,10 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "ipykernel>=7.4.0",
+    "jupyterlab>=4.6.4",
+    "numpy>=2.5.4",
+    "pandas>=3.0.6",
     "pytest>=8",        # unit tests for ingestion code
     "ruff>=0.8",        # linter + formatter: catches bugs and keeps style consistent
 ]
