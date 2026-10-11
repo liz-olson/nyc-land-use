@@ -30,3 +30,14 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]  # errors, pyflakes, import sorting, bugbear, pyupgrade
+
+# Exploration notebooks are scratch work, so style rules are relaxed there.
+# Rules that catch real bugs (undefined names, syntax errors, etc.) still apply.
+[tool.ruff.lint.per-file-ignores]
+"notebooks/**" = [
+    "E501",  # line too long: long SQL strings and comments are fine
+    "E402",  # imports not at top: cells often import as they go
+    "F401",  # unused import: harmless while exploring
+    "F841",  # variable assigned but never used: common in scratch cells
+    "I001",  # import order
+]
