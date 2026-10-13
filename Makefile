@@ -33,3 +33,6 @@ check: lint test dbt-debug dbt-parse  ## Everything CI runs
 
 clean:  ## Delete local build outputs (keeps raw data)
 	rm -rf transform/target transform/logs logs .pytest_cache .ruff_cache
+
+ingest-zap:  ## Fetch ZAP project data into bronze
+	uv run python -m ingest.sources.zap
