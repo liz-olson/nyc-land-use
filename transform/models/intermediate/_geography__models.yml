@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: int_project_lots
+    description: >
+      One row per (project, tax lot), restricted to resolved BBLs (crosswalk rows
+      where ZAP hadn't yet validated a lot are dropped) belonging to a project that
+      exists in stg_zap__projects.
+    columns:
+      - name: project_id
+        data_tests:
+          - not_null
+      - name: bbl
+        data_tests:
+          - not_null
+
+  - name: int_project_geography
+    description: >
+      One row per project (every project in stg_zap__projects gets a row here, located
+      or not), with a single council/community district resolved from its linked tax
+      lots. For the ~25% of projects with no usable lot at all, community_district
+      falls back to ZAP's own self-reported community_district field when that field
+      has a clean, single value -- see the model's own comments for the full story.
+      council_district is only ever set from PLUTO; there's no fallback for it.
+    columns:
+      - name: project_id
+        data_tests:
+          - unique
+          - not_null
+      - name: council_district
+      - name: community_district
+      - name: spans_multiple_council_districts
+        description: >
+          True when this project's lots disagree on council district and the
+          district shown is just the one backed by the most lots.
+      - name: community_district_is_self_reported
+        description: >
+          True when community_district came from ZAP's own field rather than being
+          looked up through a resolved lot in PLUTO (and council_district is
+          therefore null for this row).

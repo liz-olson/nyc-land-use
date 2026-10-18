@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: stg_zap_bbl
+    description: >
+      One row per (project, tax lot) pair, deduplicated to the latest snapshot.
+      bbl can be null: a project can have a crosswalk row logged before ZAP
+      finished resolving it to an actual lot (70 projects have at least one such
+      row as of this build; 67 of those also have a resolved lot elsewhere, so
+      only 3 projects have no resolved BBL at all).
+    columns:
+      - name: project_id
+        description: Foreign key to stg_zap__projects.
+        data_tests:
+          - not_null
+
+  - name: stg_pluto
+    description: One row per NYC tax lot, deduplicated to the latest snapshot.
+    columns:
+      - name: bbl
+        description: Borough-Block-Lot identifier, cast to integer. Unique per lot.
+        data_tests:
+          - unique
+          - not_null
+      - name: council_district
+      - name: community_district
