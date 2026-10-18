@@ -36,3 +36,9 @@ clean:  ## Delete local build outputs (keeps raw data)
 
 ingest-zap:  ## Fetch ZAP project data into bronze
 	uv run python -m ingest.sources.zap
+
+ingest-zap-bbl:  ## Fetch the ZAP BBL crosswalk into bronze
+	uv run python -m ingest.sources.zap_bbl
+
+ingest-pluto:  ## Fetch PLUTO (~858k tax lots) into bronze -- takes a while
+	uv run python -m ingest.sources.pluto

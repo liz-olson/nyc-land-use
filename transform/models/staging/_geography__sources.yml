@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: >
+      Raw data landed by the Python scripts in ingest/sources/, exactly as each
+      source API returned it. Never cleaned, never deduplicated.
+    meta:
+      external_location: "read_parquet('data/bronze/{name}/ingest_date=*/part-0.parquet', hive_partitioning=true)"
+    tables:
+      - name: zap_bbl
+        description: >
+          Crosswalk from ZAP project_id to BBL (Borough-Block-Lot): one row per
+          (project, tax lot) pair, since a project can span several lots. One row per
+          snapshot per pair -- stg_zap_bbl collapses this to the latest snapshot.
+      - name: pluto
+        description: >
+          One row per NYC tax lot (identified by BBL), with its council district,
+          community district, and coordinates. ~858k lots citywide.
