@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: >
+      Raw data landed by the Python scripts in ingest/sources/, exactly as each
+      source API returned it. Never cleaned, never deduplicated.
+    meta:
+      external_location: "read_parquet('data/bronze/{name}/ingest_date=*/part-0.parquet', hive_partitioning=true)"
+    tables:
+      - name: zap_projects
+        description: >
+          One row per (project, ingest run): every daily snapshot is kept, so the
+          same project_id appears once per ingest_date. stg_zap__projects collapses
+          this to one row per project.

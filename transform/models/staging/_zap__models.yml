@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_zap__projects
+    description: >
+      One cleaned row per ZAP project: the latest ingested snapshot, with dates
+      cast to real dates, cc_district cast to an integer, and mih_flag cast to
+      a boolean.
+    columns:
+      - name: project_id
+        description: Unique ID for the project, assigned by ZAP.
+        data_tests:
+          - unique
+          - not_null
+      - name: borough
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island", "Citywide"]
+      - name: app_filed_date
+      - name: completed_date
